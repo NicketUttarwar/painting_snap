@@ -1,0 +1,16 @@
+{
+  "name": "section-image-correction-editor",
+  "version": "1.0.0",
+  "description": "Web app to correct and combine painting section images",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "serve": "node server.js",
+    "test": "node tests/test-manifest.js && node tests/test-straighten.js && node tests/test-partition.js",
+    "test:validate": "node tests/validate-export-manifest.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "multer": "^1.4.5-lts.1"
+  }
+}

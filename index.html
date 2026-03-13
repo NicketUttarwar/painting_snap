@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section Image Correction Editor</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="app">
+    <header class="toolbar">
+      <div class="toolbar-row toolbar-header">
+        <span class="toolbar-label">Image set</span>
+        <button type="button" id="btn-choose-set" class="btn" title="Open list of image sets">Choose set</button>
+        <span id="folder-name" class="folder-name"></span>
+      </div>
+
+      <div class="steps-compact">
+        <div class="step" id="step-1">
+          <span class="step-title">1. Rotate &amp; move</span>
+          <span class="step-hint-inline" title="Do: Hover section → ↻ Rotate or Move section + drag. Undo: Rotate 4× or drag back.">Hover → ↻ · Move section to drag</span>
+          <button type="button" id="btn-move-section" class="btn btn-mode" title="Drag a section to move it">Move section</button>
+          <div id="layer-stack" class="layer-stack hidden" aria-label="Section layer order"></div>
+        </div>
+        <div class="step" id="step-2">
+          <span class="step-title">2. Boundary</span>
+          <span class="step-hint-inline" title="Do: Redo auto boundary then Add/Remove corner. Undo: Redo auto boundary or Remove corner.">Redo auto → Add/Remove corner</span>
+          <button type="button" id="btn-redo-auto-boundary" class="btn" title="Recompute boundary from section corners">Redo auto</button>
+          <button type="button" id="btn-add-corner" class="btn btn-mode" title="Click section corners/edges to add">Add corner</button>
+          <button type="button" id="btn-remove-corner" class="btn btn-mode" title="Click boundary corners to remove">Remove corner</button>
+          <div id="corner-list" class="corner-list-panel hidden" aria-label="Boundary corners"></div>
+        </div>
+        <div class="step" id="step-3">
+          <span class="step-title">3. Place sections</span>
+          <span class="step-hint-inline" title="Click a section to select it (outline + center handle). Drag from center onto another section to lock with a shared edge. Green = connections.">Click to select → drag from center to lock</span>
+          <button type="button" id="btn-place-lock-section" class="btn btn-mode" title="Click a section to select; drag from its center onto another to lock (shared edge, no gap)">Place lock section</button>
+          <button type="button" id="btn-undo-last-lock" class="btn" title="Remove the last locked section from the cluster">Undo last lock</button>
+          <button type="button" id="btn-reset-placement" class="btn" title="Clear all placement and start over">Reset placement</button>
+          <button type="button" id="btn-preview" class="btn btn-primary">Preview</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="app-body">
+      <aside id="left-panel" class="left-panel collapsed" aria-label="Image sets from source_images">
+        <div class="left-panel-header">
+          <h2 class="left-panel-title">Image sets</h2>
+          <button type="button" id="btn-close-panel" class="btn btn-icon" title="Close panel" aria-label="Close panel">×</button>
+        </div>
+        <div id="folder-list" class="folder-list"></div>
+      </aside>
+      <main class="main">
+        <div id="drop-zone" class="drop-zone">
+          <p>Click <strong>Choose set</strong> to load a folder from <code>source_images/</code>.</p>
+        </div>
+        <div id="editor-wrap" class="editor-wrap hidden">
+          <div class="canvas-container">
+            <canvas id="canvas"></canvas>
+            <div id="canvas-overlay" class="canvas-overlay" aria-hidden="true">
+              <button type="button" id="btn-rotate-section" class="btn-rotate-section" title="Rotate this section 90°">↻ Rotate</button>
+            </div>
+          </div>
+        </div>
+      </main>
+      <aside id="locked-sections-panel" class="locked-sections-panel hidden" aria-label="Locked sections">
+        <div class="locked-sections-header">
+          <h2 class="locked-sections-title">Locked sections</h2>
+        </div>
+        <div id="locked-sections-list" class="locked-sections-list"></div>
+      </aside>
+    </div>
+
+    <footer class="status" id="status"></footer>
+
+    <div id="preview-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Preview</h3>
+        <div class="preview-canvas-wrap"><canvas id="preview-canvas"></canvas></div>
+        <div class="modal-actions">
+          <button type="button" id="btn-preview-save-folder" class="btn btn-primary">Save folder</button>
+          <button type="button" id="btn-preview-download" class="btn">Download image</button>
+          <button type="button" id="btn-preview-close" class="btn">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
