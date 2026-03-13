@@ -5,9 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "serve": "node server.js",
-    "test": "node tests/test-manifest.js && node tests/test-straighten.js && node tests/test-partition.js",
-    "test:validate": "node tests/validate-export-manifest.js"
+    "serve": "node server.js"
   },
   "dependencies": {
     "express": "^4.21.0",

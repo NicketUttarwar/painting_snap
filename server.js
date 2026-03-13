@@ -17,7 +17,11 @@ const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
 
 app.use(express.json({ limit: '1mb' }));
-app.use(express.static(__dirname));
+
+// API routes must be registered before express.static so they are not shadowed
+app.get('/api/health', (req, res) => {
+  res.json({ ok: true, saveExport: true, message: 'Save API is available. Use POST /api/save-export to save exports.' });
+});
 
 app.post('/api/save-export', upload.any(), (req, res) => {
   const folderName = (req.body && req.body.folderName) || 'corrected';
@@ -28,7 +32,7 @@ app.post('/api/save-export', upload.any(), (req, res) => {
     return res.status(400).json({ error: 'Missing manifest' });
   }
 
-  const subdir = `corrected-${folderName}`;
+  const subdir = folderName;
   const outDir = path.join(OUTPUT_DEFAULTS, subdir);
 
   try {
@@ -54,6 +58,8 @@ app.post('/api/save-export', upload.any(), (req, res) => {
     res.status(500).json({ error: e.message || 'Failed to save' });
   }
 });
+
+app.use(express.static(__dirname));
 
 app.listen(PORT, () => {
   console.log(`Section Image Correction Editor at http://localhost:${PORT}`);

@@ -519,6 +519,54 @@ label {
   object-fit: contain;
 }
 
+.preview-save-warning {
+  background: rgba(180, 120, 40, 0.25);
+  border: 1px solid #a80;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: #ec8;
+}
+
+.preview-save-warning.hidden {
+  display: none !important;
+}
+
+.preview-save-error {
+  background: rgba(180, 60, 50, 0.2);
+  border: 1px solid #c44;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.preview-save-error.hidden {
+  display: none !important;
+}
+
+.preview-save-error h4 {
+  margin: 0 0 0.35rem 0;
+  color: #f88;
+  font-size: 0.95rem;
+}
+
+.preview-save-error p {
+  margin: 0.35rem 0;
+  font-size: 0.9rem;
+  color: #ddd;
+}
+
+.preview-save-error-hint {
+  font-size: 0.85rem !important;
+  color: #aaa !important;
+  margin-top: 0.5rem !important;
+}
+
+.preview-save-error .modal-actions {
+  margin-top: 0.5rem;
+}
+
 .modal-actions {
   display: flex;
   gap: 0.5rem;

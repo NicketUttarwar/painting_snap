@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Generated output (corrected composites and section exports)
+# output_defaults/
+
+# macOS
+.DS_Store
+
+# Logs and env
+*.log
+.env
+.env.local
+.env.*.local
+
+# Screenshots and temp images
+Screenshot*.png
+*.tmp
+*.temp
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

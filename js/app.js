@@ -58,8 +58,13 @@ const folderNameEl = document.getElementById('folder-name');
 const previewModal = document.getElementById('preview-modal');
 const previewCanvas = document.getElementById('preview-canvas');
 const btnPreviewDownload = document.getElementById('btn-preview-download');
-const btnPreviewSaveFolder = document.getElementById('btn-preview-save-folder');
 const btnPreviewClose = document.getElementById('btn-preview-close');
+const previewSaveWarningEl = document.getElementById('preview-save-warning');
+const previewSaveWarningTextEl = document.getElementById('preview-save-warning-text');
+const previewSaveErrorEl = document.getElementById('preview-save-error');
+const previewSaveErrorMessageEl = document.getElementById('preview-save-error-message');
+const btnPreviewErrorTryAgain = document.getElementById('btn-preview-error-try-again');
+const btnPreviewErrorClose = document.getElementById('btn-preview-error-close');
 const btnAddCorner = document.getElementById('btn-add-corner');
 const btnRemoveCorner = document.getElementById('btn-remove-corner');
 const canvasOverlay = document.getElementById('canvas-overlay');
@@ -1362,24 +1367,80 @@ function openPreview() {
   state.lastExportCanvas = c;
   previewModal.classList.remove('hidden');
   requestAnimationFrame(() => requestAnimationFrame(drawPreviewToFill));
+  checkSaveApiAvailable();
+  // Always save to output_defaults/: one folder per preview with section PNGs, composite, and manifest.
+  savePreviewToOutputDefaults();
+}
+
+/** Ping /api/health; if unavailable, show a warning in the preview so user knows to run npm start. */
+async function checkSaveApiAvailable() {
+  if (!previewSaveWarningEl || !previewSaveWarningTextEl) return;
+  try {
+    const res = await fetch('/api/health');
+    if (res.ok) {
+      previewSaveWarningEl.classList.add('hidden');
+      return;
+    }
+  } catch (_) {}
+  previewSaveWarningTextEl.textContent =
+    "Save API not reachable. To save to output_defaults/, run 'npm start' and open http://localhost:3333 (not as a file or from another server).";
+  previewSaveWarningEl.classList.remove('hidden');
 }
 
 function closePreview() {
+  hidePreviewSaveError();
+  if (previewSaveWarningEl) previewSaveWarningEl.classList.add('hidden');
   previewModal.classList.add('hidden');
 }
 
-async function previewDownload() {
-  if (state.lastExportCanvas) {
-    const name = state.folderName ? `corrected-${state.folderName}.png` : 'corrected.png';
-    await saveExportCanvas(state.lastExportCanvas, name);
-  }
-  closePreview();
+function showPreviewSaveError(message) {
+  if (previewSaveErrorMessageEl) previewSaveErrorMessageEl.textContent = message;
+  if (previewSaveErrorEl) previewSaveErrorEl.classList.remove('hidden');
 }
 
-async function previewSaveFolder() {
+function hidePreviewSaveError() {
+  if (previewSaveErrorEl) previewSaveErrorEl.classList.add('hidden');
+}
+
+/**
+ * Build a user-facing message for save failures (404 = wrong server, network, or server error).
+ * @param {number} [status]
+ * @param {string} [bodyError]
+ * @param {Error} [err]
+ */
+function getSaveErrorMessage(status, bodyError, err) {
+  if (status === 404) {
+    return (
+      "Save API not found (404). The app is not running with the correct server. " +
+      "Run 'npm start' in the project folder, then open http://localhost:3333 in your browser. " +
+      "Do not open the app as a file (file://) or from another server."
+    );
+  }
+  if (status === 400 && bodyError) return `Invalid request: ${bodyError}. Check that all sections are placed and try again.`;
+  if (status >= 500) return `Server error (${status}): ${bodyError || 'Could not write to output_defaults/.'}`;
+  if (err?.message?.includes('Failed to fetch') || err?.name === 'TypeError') {
+    return (
+      "Network error: cannot reach the server. Run 'npm start' and open http://localhost:3333. " +
+      "If the server is running, check that you opened the app from the same origin."
+    );
+  }
+  return bodyError || err?.message || 'Save failed. Run the app with npm start and open http://localhost:3333.';
+}
+
+/** Save a new folder to output_defaults/ with section PNGs, composite.png, and manifest.json. */
+async function previewDownload() {
+  await savePreviewToOutputDefaults();
+}
+
+/**
+ * Save current preview to output_defaults/ in a new folder (one folder per preview).
+ * Folder contains: section-0.png, section-1.png, ..., composite.png, manifest.json.
+ * Manifest includes positions, relationships, coordinates, outer edges, and inner edges (horizontal/vertical).
+ */
+async function savePreviewToOutputDefaults() {
   const straightenResult = getStraightenResult();
   if (!state.sections?.length || !straightenResult || !state.manifest) {
-    setStatus('Load a folder, set boundary (steps 1–2), then place sections and Save folder.');
+    setStatus('Preview shown. Save to output_defaults/ requires server: run npm start.');
     return;
   }
   const opts = getExportOptions();
@@ -1398,11 +1459,13 @@ async function previewSaveFolder() {
     sectionToRect: getSectionRectsForExport(),
   };
 
-  const folderName = state.folderName || 'corrected';
+  const baseName = state.folderName || 'corrected';
+  const folderName = `${baseName}-${Date.now()}`;
 
   try {
+    hidePreviewSaveError();
     setStatus('Saving to output_defaults/…');
-    const { manifest, sectionBlobs, compositeBlob } = await getExportBlobsAndManifest(folderName, exportOptions);
+    const { manifest, sectionBlobs, compositeBlob } = await getExportBlobsAndManifest(baseName, exportOptions);
 
     const form = new FormData();
     form.append('folderName', folderName);
@@ -1417,19 +1480,22 @@ async function previewSaveFolder() {
       body: form,
     });
 
+    const body = await res.json().catch(() => ({}));
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || res.statusText || 'Save failed');
+      const message = getSaveErrorMessage(res.status, body.error, new Error(body.error || res.statusText));
+      setStatus('Save failed.');
+      showPreviewSaveError(message);
+      return;
     }
 
-    const data = await res.json();
-    const subfolderName = data.path || `corrected-${folderName}`;
+    const data = body;
+    const subfolderName = data.path || folderName;
     setStatus(`Saved to output_defaults/${subfolderName}/: ${(data.saved || []).join(', ')}`);
   } catch (e) {
-    setStatus('Save failed: ' + (e.message || 'Unknown error') + '. Run the app with npm start so exports go to output_defaults/.');
-    return;
+    const message = getSaveErrorMessage(undefined, undefined, e);
+    setStatus('Save failed.');
+    showPreviewSaveError(message);
   }
-  closePreview();
 }
 
 async function runWarpSave() {
@@ -1465,14 +1531,17 @@ async function runWarpSave() {
     }
     form.append('composite', compositeBlob, 'composite.png');
     const res = await fetch('/api/save-export', { method: 'POST', body: form });
+    const body = await res.json().catch(() => ({}));
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || res.statusText);
+      const msg = getSaveErrorMessage(res.status, body.error, new Error(body.error || res.statusText));
+      setStatus('Save failed: ' + msg);
+      return;
     }
-    const data = await res.json();
-    setStatus(`Saved to output_defaults/${data.path || 'corrected-' + folderName}/`);
+    const data = body;
+    setStatus(`Saved to output_defaults/${data.path || folderName}/`);
   } catch (e) {
-    setStatus('Save failed: ' + (e.message || '') + ' Run with npm start to save to output_defaults/.');
+    const msg = getSaveErrorMessage(undefined, undefined, e);
+    setStatus('Save failed: ' + msg);
   }
 }
 
@@ -1798,8 +1867,12 @@ if (btnPlaceLockSection) {
   });
 }
 btnPreviewDownload?.addEventListener('click', previewDownload);
-btnPreviewSaveFolder?.addEventListener('click', previewSaveFolder);
 btnPreviewClose?.addEventListener('click', closePreview);
+btnPreviewErrorTryAgain?.addEventListener('click', () => {
+  hidePreviewSaveError();
+  savePreviewToOutputDefaults();
+});
+btnPreviewErrorClose?.addEventListener('click', hidePreviewSaveError);
 previewModal?.addEventListener('click', (e) => {
   if (e.target === previewModal) closePreview();
 });

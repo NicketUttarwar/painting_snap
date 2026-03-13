@@ -1,0 +1,760 @@
+{
+  "source_filename": "2021-01-07_08-40-59_470",
+  "source_width": 3314.2857513427734,
+  "source_height": 2093.71435546875,
+  "composite_filename": "composite.png",
+  "composite_width": 3314.2857513427734,
+  "composite_height": 2093.71435546875,
+  "composite_width_px": 3314,
+  "composite_height_px": 2094,
+  "scale": 1,
+  "margin_px": 20,
+  "margin_color": "#ffffff",
+  "output_rect": {
+    "x": 308.57142639160156,
+    "y": 35.171357546897184,
+    "width": 3274.2857513427734,
+    "height": 2053.71435546875
+  },
+  "sections": [
+    {
+      "index": 1,
+      "filename": "section-1.png",
+      "bounds": {
+        "x": 1696.5713958740234,
+        "y": 30.792929257302035,
+        "width": 1598,
+        "height": 2026
+      },
+      "bounds_px": {
+        "x": 1697,
+        "y": 31,
+        "width": 1598,
+        "height": 2026
+      },
+      "corners": [
+        [
+          1696.5713958740234,
+          30.792929257302035
+        ],
+        [
+          3294.5713958740234,
+          30.792929257302035
+        ],
+        [
+          3294.5713958740234,
+          2056.792929257302
+        ],
+        [
+          1696.5713958740234,
+          2056.792929257302
+        ]
+      ],
+      "centroid_x": 2495.5713958740234,
+      "centroid_y": 1043.7929292573021,
+      "rotation_degrees": 270,
+      "source_width": 3314.2857513427734,
+      "source_height": 2093.71435546875,
+      "section_type": "quad",
+      "output_width_px": 1598,
+      "output_height_px": 2026,
+      "origin_x": 1696.5713958740234,
+      "origin_y": 30.792929257302035,
+      "width_px": 1598,
+      "height_px": 2026,
+      "position_rank": 0,
+      "edges": [
+        {
+          "edge_index": 0,
+          "edge_name": "top",
+          "type": "internal",
+          "line": {
+            "type": "horizontal",
+            "value": 45.96428680419922
+          },
+          "aligns_with": {
+            "section": "boundary"
+          }
+        },
+        {
+          "edge_index": 1,
+          "edge_name": "right",
+          "type": "outer",
+          "line": {
+            "type": "vertical",
+            "value": 3582.857177734375
+          },
+          "aligns_with": {
+            "section": "boundary"
+          }
+        },
+        {
+          "edge_index": 2,
+          "edge_name": "bottom",
+          "type": "internal",
+          "line": {
+            "type": "horizontal",
+            "value": 2072.25
+          },
+          "aligns_with": {
+            "section": "boundary"
+          }
+        },
+        {
+          "edge_index": 3,
+          "edge_name": "left",
+          "type": "internal",
+          "line": {
+            "type": "vertical",
+            "value": 1985.142822265625
+          },
+          "aligns_with": {
+            "section": 0,
+            "edge": 1
+          }
+        }
+      ]
+    },
+    {
+      "index": 0,
+      "filename": "section-0.png",
+      "bounds": {
+        "x": 20,
+        "y": 20,
+        "width": 1677,
+        "height": 2054
+      },
+      "bounds_px": {
+        "x": 20,
+        "y": 20,
+        "width": 1677,
+        "height": 2054
+      },
+      "corners": [
+        [
+          20,
+          20
+        ],
+        [
+          1697,
+          20
+        ],
+        [
+          1697,
+          2074
+        ],
+        [
+          20,
+          2074
+        ]
+      ],
+      "centroid_x": 858.5,
+      "centroid_y": 1047,
+      "rotation_degrees": 0,
+      "source_width": 3314.2857513427734,
+      "source_height": 2093.71435546875,
+      "section_type": "quad",
+      "output_width_px": 1677,
+      "output_height_px": 2054,
+      "origin_x": 20,
+      "origin_y": 20,
+      "width_px": 1677,
+      "height_px": 2054,
+      "position_rank": 1,
+      "edges": [
+        {
+          "edge_index": 0,
+          "edge_name": "top",
+          "type": "outer",
+          "line": {
+            "type": "horizontal",
+            "value": 35.171357546897184
+          },
+          "aligns_with": {
+            "section": "boundary"
+          }
+        },
+        {
+          "edge_index": 1,
+          "edge_name": "right",
+          "type": "internal",
+          "line": {
+            "type": "vertical",
+            "value": 1985.142822265625
+          },
+          "aligns_with": {
+            "section": 1,
+            "edge": 3
+          }
+        },
+        {
+          "edge_index": 2,
+          "edge_name": "bottom",
+          "type": "outer",
+          "line": {
+            "type": "horizontal",
+            "value": 2088.885713015647
+          },
+          "aligns_with": {
+            "section": "boundary"
+          }
+        },
+        {
+          "edge_index": 3,
+          "edge_name": "left",
+          "type": "outer",
+          "line": {
+            "type": "vertical",
+            "value": 308.57142639160156
+          },
+          "aligns_with": {
+            "section": "boundary"
+          }
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "reading_order": [
+      1,
+      0
+    ],
+    "section_relations": [
+      {
+        "left_of": [],
+        "right_of": [
+          1
+        ],
+        "above": [],
+        "below": []
+      },
+      {
+        "left_of": [
+          0
+        ],
+        "right_of": [],
+        "above": [],
+        "below": []
+      }
+    ],
+    "section_positions": {
+      "0": {
+        "x": 20,
+        "y": 20,
+        "width": 1677,
+        "height": 2054,
+        "rotation_degrees": 0
+      },
+      "1": {
+        "x": 1696.5713958740234,
+        "y": 30.792929257302035,
+        "width": 1598,
+        "height": 2026,
+        "rotation_degrees": 270
+      }
+    },
+    "arrangement": "horizontal",
+    "description": "Sections arranged in a single row (left to right).",
+    "connections_description": "shared_edges = internal seams (section_a edge_name_a abuts section_b edge_name_b). outer_edges_summary = edges on the composite boundary. section_relations = left_of, right_of, above, below per section index.",
+    "shared_edges": [
+      {
+        "section_a": 1,
+        "edge_a": 3,
+        "edge_name_a": "left",
+        "section_b": 0,
+        "edge_b": 1,
+        "edge_name_b": "right"
+      }
+    ],
+    "outer_edges_summary": [
+      {
+        "section_index": 1,
+        "edge_index": 1,
+        "edge_name": "right"
+      },
+      {
+        "section_index": 0,
+        "edge_index": 0,
+        "edge_name": "top"
+      },
+      {
+        "section_index": 0,
+        "edge_index": 2,
+        "edge_name": "bottom"
+      },
+      {
+        "section_index": 0,
+        "edge_index": 3,
+        "edge_name": "left"
+      }
+    ],
+    "sections_with_outer_edges": {
+      "0": [
+        "top",
+        "bottom",
+        "left"
+      ],
+      "1": [
+        "right"
+      ]
+    },
+    "inner_edges_horizontal": [],
+    "inner_edges_vertical": [
+      {
+        "section_a": 1,
+        "section_b": 0,
+        "edge_a": "left",
+        "edge_b": "right",
+        "x_value": 1985.142822265625,
+        "description": "Section 1 left abuts Section 0 right at x = 1985.142822265625"
+      }
+    ],
+    "edge_alignment": {
+      "description": "Section edges classified as outer (boundary) or internal (shared). Edge indices: 0=top, 1=right, 2=bottom, 3=left. shared_edges = internal connections; outer_edges_summary = edges on composite boundary.",
+      "edge_index_names": {
+        "0": "top",
+        "1": "right",
+        "2": "bottom",
+        "3": "left"
+      },
+      "section_edges": [
+        {
+          "section_index": 1,
+          "edge_index": 0,
+          "type": "internal",
+          "line": {
+            "type": "horizontal",
+            "value": 45.96428680419922
+          },
+          "span": [
+            1985.142822265625,
+            3582.857177734375
+          ],
+          "aligns_with": {
+            "section": "boundary"
+          }
+        },
+        {
+          "section_index": 1,
+          "edge_index": 1,
+          "type": "outer",
+          "line": {
+            "type": "vertical",
+            "value": 3582.857177734375
+          },
+          "span": [
+            45.96428680419922,
+            2072.25
+          ],
+          "aligns_with": {
+            "section": "boundary"
+          }
+        },
+        {
+          "section_index": 1,
+          "edge_index": 2,
+          "type": "internal",
+          "line": {
+            "type": "horizontal",
+            "value": 2072.25
+          },
+          "span": [
+            1985.142822265625,
+            3582.857177734375
+          ],
+          "aligns_with": {
+            "section": "boundary"
+          }
+        },
+        {
+          "section_index": 1,
+          "edge_index": 3,
+          "type": "internal",
+          "line": {
+            "type": "vertical",
+            "value": 1985.142822265625
+          },
+          "span": [
+            45.96428680419922,
+            2072.25
+          ],
+          "aligns_with": {
+            "section": 0,
+            "edge": 1
+          }
+        },
+        {
+          "section_index": 0,
+          "edge_index": 0,
+          "type": "outer",
+          "line": {
+            "type": "horizontal",
+            "value": 35.171357546897184
+          },
+          "span": [
+            308.57142639160156,
+            1985.142822265625
+          ],
+          "aligns_with": {
+            "section": "boundary"
+          }
+        },
+        {
+          "section_index": 0,
+          "edge_index": 1,
+          "type": "internal",
+          "line": {
+            "type": "vertical",
+            "value": 1985.142822265625
+          },
+          "span": [
+            35.171357546897184,
+            2088.885713015647
+          ],
+          "aligns_with": {
+            "section": 1,
+            "edge": 3
+          }
+        },
+        {
+          "section_index": 0,
+          "edge_index": 2,
+          "type": "outer",
+          "line": {
+            "type": "horizontal",
+            "value": 2088.885713015647
+          },
+          "span": [
+            308.57142639160156,
+            1985.142822265625
+          ],
+          "aligns_with": {
+            "section": "boundary"
+          }
+        },
+        {
+          "section_index": 0,
+          "edge_index": 3,
+          "type": "outer",
+          "line": {
+            "type": "vertical",
+            "value": 308.57142639160156
+          },
+          "span": [
+            35.171357546897184,
+            2088.885713015647
+          ],
+          "aligns_with": {
+            "section": "boundary"
+          }
+        }
+      ],
+      "aligned_edges": [
+        {
+          "a": {
+            "section": 1,
+            "edge": 0
+          },
+          "b": "boundary",
+          "line": {
+            "type": "horizontal",
+            "value": 45.96428680419922
+          }
+        },
+        {
+          "a": {
+            "section": 1,
+            "edge": 1
+          },
+          "b": "boundary",
+          "line": {
+            "type": "vertical",
+            "value": 3582.857177734375
+          }
+        },
+        {
+          "a": {
+            "section": 1,
+            "edge": 2
+          },
+          "b": "boundary",
+          "line": {
+            "type": "horizontal",
+            "value": 2072.25
+          }
+        },
+        {
+          "a": {
+            "section": 1,
+            "edge": 3
+          },
+          "b": {
+            "section": 0,
+            "edge": 1
+          },
+          "line": {
+            "type": "vertical",
+            "value": 1985.142822265625
+          }
+        },
+        {
+          "a": {
+            "section": 0,
+            "edge": 0
+          },
+          "b": "boundary",
+          "line": {
+            "type": "horizontal",
+            "value": 35.171357546897184
+          }
+        },
+        {
+          "a": {
+            "section": 0,
+            "edge": 2
+          },
+          "b": "boundary",
+          "line": {
+            "type": "horizontal",
+            "value": 2088.885713015647
+          }
+        },
+        {
+          "a": {
+            "section": 0,
+            "edge": 3
+          },
+          "b": "boundary",
+          "line": {
+            "type": "vertical",
+            "value": 308.57142639160156
+          }
+        }
+      ],
+      "perpendicular_corners": [
+        {
+          "x": 308.571,
+          "y": 35.171,
+          "type": "outer",
+          "edge_pairs": [
+            {
+              "section": 0,
+              "edge": 3
+            },
+            {
+              "section": 0,
+              "edge": 0
+            }
+          ]
+        },
+        {
+          "x": 1985.143,
+          "y": 35.171,
+          "type": "outer",
+          "edge_pairs": [
+            {
+              "section": 0,
+              "edge": 0
+            },
+            {
+              "section": 0,
+              "edge": 1
+            }
+          ]
+        },
+        {
+          "x": 1985.143,
+          "y": 45.964,
+          "type": "internal",
+          "edge_pairs": [
+            {
+              "section": 1,
+              "edge": 3
+            },
+            {
+              "section": 1,
+              "edge": 0
+            }
+          ]
+        },
+        {
+          "x": 3582.857,
+          "y": 45.964,
+          "type": "outer",
+          "edge_pairs": [
+            {
+              "section": 1,
+              "edge": 0
+            },
+            {
+              "section": 1,
+              "edge": 1
+            }
+          ]
+        },
+        {
+          "x": 1985.143,
+          "y": 2072.25,
+          "type": "internal",
+          "edge_pairs": [
+            {
+              "section": 1,
+              "edge": 2
+            },
+            {
+              "section": 1,
+              "edge": 3
+            }
+          ]
+        },
+        {
+          "x": 3582.857,
+          "y": 2072.25,
+          "type": "outer",
+          "edge_pairs": [
+            {
+              "section": 1,
+              "edge": 1
+            },
+            {
+              "section": 1,
+              "edge": 2
+            }
+          ]
+        },
+        {
+          "x": 308.571,
+          "y": 2088.886,
+          "type": "outer",
+          "edge_pairs": [
+            {
+              "section": 0,
+              "edge": 2
+            },
+            {
+              "section": 0,
+              "edge": 3
+            }
+          ]
+        },
+        {
+          "x": 1985.143,
+          "y": 2088.886,
+          "type": "outer",
+          "edge_pairs": [
+            {
+              "section": 0,
+              "edge": 1
+            },
+            {
+              "section": 0,
+              "edge": 2
+            }
+          ]
+        }
+      ],
+      "outer_edges": [
+        {
+          "section": 1,
+          "edge": 1
+        },
+        {
+          "section": 0,
+          "edge": 0
+        },
+        {
+          "section": 0,
+          "edge": 2
+        },
+        {
+          "section": 0,
+          "edge": 3
+        }
+      ]
+    }
+  },
+  "recreate_composite": "1. Create an image of size composite_width_px × composite_height_px (3314 × 2094). 2. Fill the entire image with margin_color (#ffffff) for margin and background. 3. For each section in layout.reading_order, draw the PNG file listed in sections[].filename at the exact position and size given by sections[].bounds_px (x, y, width, height). 4. Section order: 1, 0. Each section's position and size are in sections[].bounds_px and sections[].bounds (content-space coordinates). 5. The result reproduces composite.png. Outer edges are on the image boundary; inner edges are shared between sections (see layout.inner_edges_horizontal and layout.inner_edges_vertical).",
+  "recreate_composite_steps": [
+    "1. Create an image of size composite_width_px × composite_height_px (3314 × 2094).",
+    "2. Fill the entire image with margin_color (#ffffff) for margin and background.",
+    "3. For each section in layout.reading_order, draw the PNG file listed in sections[].filename at the exact position and size given by sections[].bounds_px (x, y, width, height).",
+    "4. Section order: 1, 0. Each section's position and size are in sections[].bounds_px and sections[].bounds (content-space coordinates).",
+    "5. The result reproduces composite.png. Outer edges are on the image boundary; inner edges are shared between sections (see layout.inner_edges_horizontal and layout.inner_edges_vertical)."
+  ],
+  "sections_coordinates": {
+    "0": {
+      "content_space": {
+        "x": 20,
+        "y": 20,
+        "width": 1677,
+        "height": 2054
+      },
+      "pixels": {
+        "x": 20,
+        "y": 20,
+        "width": 1677,
+        "height": 2054
+      },
+      "corners": [
+        [
+          20,
+          20
+        ],
+        [
+          1697,
+          20
+        ],
+        [
+          1697,
+          2074
+        ],
+        [
+          20,
+          2074
+        ]
+      ],
+      "centroid": {
+        "x": 858.5,
+        "y": 1047
+      }
+    },
+    "1": {
+      "content_space": {
+        "x": 1696.5713958740234,
+        "y": 30.792929257302035,
+        "width": 1598,
+        "height": 2026
+      },
+      "pixels": {
+        "x": 1697,
+        "y": 31,
+        "width": 1598,
+        "height": 2026
+      },
+      "corners": [
+        [
+          1696.5713958740234,
+          30.792929257302035
+        ],
+        [
+          3294.5713958740234,
+          30.792929257302035
+        ],
+        [
+          3294.5713958740234,
+          2056.792929257302
+        ],
+        [
+          1696.5713958740234,
+          2056.792929257302
+        ]
+      ],
+      "centroid": {
+        "x": 2495.5713958740234,
+        "y": 1043.7929292573021
+      }
+    }
+  },
+  "original_source_width": 3840,
+  "original_source_height": 2160
+}

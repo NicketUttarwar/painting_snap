@@ -75,10 +75,21 @@
     <div id="preview-modal" class="modal hidden">
       <div class="modal-content">
         <h3>Preview</h3>
+        <div id="preview-save-warning" class="preview-save-warning hidden" role="status">
+          <span id="preview-save-warning-text"></span>
+        </div>
+        <div id="preview-save-error" class="preview-save-error hidden" role="alert">
+          <h4>Save failed</h4>
+          <p id="preview-save-error-message"></p>
+          <p class="preview-save-error-hint">Fix the issue above, then click <strong>Try again</strong>. If you opened the app as a file or from another server, run <code>npm start</code> and open <code>http://localhost:3333</code>.</p>
+          <div class="modal-actions">
+            <button type="button" id="btn-preview-error-try-again" class="btn btn-primary">Try again</button>
+            <button type="button" id="btn-preview-error-close" class="btn">Close</button>
+          </div>
+        </div>
         <div class="preview-canvas-wrap"><canvas id="preview-canvas"></canvas></div>
         <div class="modal-actions">
-          <button type="button" id="btn-preview-save-folder" class="btn btn-primary">Save folder</button>
-          <button type="button" id="btn-preview-download" class="btn">Download image</button>
+          <button type="button" id="btn-preview-download" class="btn btn-primary">Save folder to output_defaults</button>
           <button type="button" id="btn-preview-close" class="btn">Close</button>
         </div>
       </div>

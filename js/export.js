@@ -248,14 +248,28 @@ export function detectArrangement(section_relations, reading_order, numSections)
 
 const EDGE_NAMES = { 0: 'top', 1: 'right', 2: 'bottom', 3: 'left' };
 
+/** Horizontal edges: top (0), bottom (2). Vertical edges: left (3), right (1). */
+const HORIZONTAL_EDGES = new Set([0, 2]);
+const VERTICAL_EDGES = new Set([1, 3]);
+
 /**
- * Build shared_edges list (internal connections) and outer_edges_summary from edgeAlignment for manifest.
+ * Build shared_edges list (internal connections), outer_edges_summary, sections_with_outer_edges,
+ * inner_edges_horizontal, and inner_edges_vertical from edgeAlignment for manifest.
  * @param {object} edgeAlignment - from computeEdgeAlignment
- * @returns {{ shared_edges: Array<{ section_a: number, edge_a: number, edge_name_a: string, section_b: number, edge_b: number, edge_name_b: string }>, outer_edges_summary: Array<{ section_index: number, edge_index: number, edge_name: string }> }}
+ * @returns {{
+ *   shared_edges: Array<{ section_a: number, edge_a: number, edge_name_a: string, section_b: number, edge_b: number, edge_name_b: string }>,
+ *   outer_edges_summary: Array<{ section_index: number, edge_index: number, edge_name: string }>,
+ *   sections_with_outer_edges: Record<string, string[]>,
+ *   inner_edges_horizontal: Array<{ section_a: number, section_b: number, edge_a: string, edge_b: string, y_value: number, description: string }>,
+ *   inner_edges_vertical: Array<{ section_a: number, section_b: number, edge_a: string, edge_b: string, x_value: number, description: string }>
+ * }}
  */
 function buildManifestEdgeSummaries(edgeAlignment) {
   const shared_edges = [];
   const seenPairs = new Set();
+  const inner_edges_horizontal = [];
+  const inner_edges_vertical = [];
+
   if (edgeAlignment?.section_edges) {
     for (const se of edgeAlignment.section_edges) {
       if (se.type !== 'internal' || se.aligns_with?.section === 'boundary' || typeof se.aligns_with?.section !== 'number') continue;
@@ -266,27 +280,62 @@ function buildManifestEdgeSummaries(edgeAlignment) {
       const key = [section_a, edge_a, section_b, edge_b].sort((x, y) => x - y).join(',');
       if (seenPairs.has(key)) continue;
       seenPairs.add(key);
+      const name_a = EDGE_NAMES[edge_a] ?? 'unknown';
+      const name_b = EDGE_NAMES[edge_b] ?? 'unknown';
       shared_edges.push({
         section_a,
         edge_a,
-        edge_name_a: EDGE_NAMES[edge_a] ?? 'unknown',
+        edge_name_a: name_a,
         section_b,
         edge_b,
-        edge_name_b: EDGE_NAMES[edge_b] ?? 'unknown',
+        edge_name_b: name_b,
       });
+      const lineValue = se.line?.value;
+      if (HORIZONTAL_EDGES.has(edge_a)) {
+        inner_edges_horizontal.push({
+          section_a,
+          section_b,
+          edge_a: name_a,
+          edge_b: name_b,
+          y_value: lineValue,
+          description: `Section ${section_a} ${name_a} abuts Section ${section_b} ${name_b} at y = ${lineValue}`,
+        });
+      } else {
+        inner_edges_vertical.push({
+          section_a,
+          section_b,
+          edge_a: name_a,
+          edge_b: name_b,
+          x_value: lineValue,
+          description: `Section ${section_a} ${name_a} abuts Section ${section_b} ${name_b} at x = ${lineValue}`,
+        });
+      }
     }
   }
+
   const outer_edges_summary = [];
+  const sections_with_outer_edges = {};
   if (edgeAlignment?.outer_edges) {
     for (const oe of edgeAlignment.outer_edges) {
+      const name = EDGE_NAMES[oe.edge] ?? 'unknown';
       outer_edges_summary.push({
         section_index: oe.section,
         edge_index: oe.edge,
-        edge_name: EDGE_NAMES[oe.edge] ?? 'unknown',
+        edge_name: name,
       });
+      const k = String(oe.section);
+      if (!sections_with_outer_edges[k]) sections_with_outer_edges[k] = [];
+      sections_with_outer_edges[k].push(name);
     }
   }
-  return { shared_edges, outer_edges_summary };
+
+  return {
+    shared_edges,
+    outer_edges_summary,
+    sections_with_outer_edges,
+    inner_edges_horizontal,
+    inner_edges_vertical,
+  };
 }
 
 /**
@@ -430,7 +479,13 @@ export function buildExportManifest(options) {
   }
 
   const normalized_relations = normalizeSectionRelationsForManifest(section_relations, maxSectionIndex);
-  const { shared_edges, outer_edges_summary } = buildManifestEdgeSummaries(edgeAlignment);
+  const {
+    shared_edges,
+    outer_edges_summary,
+    sections_with_outer_edges,
+    inner_edges_horizontal,
+    inner_edges_vertical,
+  } = buildManifestEdgeSummaries(edgeAlignment);
 
   const layout = {
     reading_order: reading_order || order,
@@ -441,6 +496,12 @@ export function buildExportManifest(options) {
     connections_description: 'shared_edges = internal seams (section_a edge_name_a abuts section_b edge_name_b). outer_edges_summary = edges on the composite boundary. section_relations = left_of, right_of, above, below per section index.',
     shared_edges,
     outer_edges_summary,
+    /** Which sections touch the composite boundary: section index -> list of edge names (top, right, bottom, left). */
+    sections_with_outer_edges,
+    /** Inner edges that are horizontal (top/bottom): sections that share a horizontal seam. */
+    inner_edges_horizontal,
+    /** Inner edges that are vertical (left/right): sections that share a vertical seam. */
+    inner_edges_vertical,
   };
 
   if (edgeAlignment) {
@@ -453,6 +514,14 @@ export function buildExportManifest(options) {
       outer_edges: edgeAlignment.outer_edges,
     };
   }
+
+  const recreateSteps = [
+    `1. Create an image of size composite_width_px × composite_height_px (${compositeWidthPx} × ${compositeHeightPx}).`,
+    `2. Fill the entire image with margin_color (${marginColor}) for margin and background.`,
+    `3. For each section in layout.reading_order, draw the PNG file listed in sections[].filename at the exact position and size given by sections[].bounds_px (x, y, width, height).`,
+    `4. Section order: ${(reading_order || order).join(', ')}. Each section's position and size are in sections[].bounds_px and sections[].bounds (content-space coordinates).`,
+    `5. The result reproduces composite.png. Outer edges are on the image boundary; inner edges are shared between sections (see layout.inner_edges_horizontal and layout.inner_edges_vertical).`,
+  ];
 
   const manifest = {
     source_filename: source_filename || 'corrected',
@@ -474,7 +543,20 @@ export function buildExportManifest(options) {
     },
     sections,
     layout,
-    recreate_composite: 'Create an image of size composite_width_px x composite_height_px. Fill with margin_color (e.g. for margin area). For each section index in layout.reading_order, draw the file sections[i].filename at position (sections[i].bounds_px.x, sections[i].bounds_px.y) with size sections[i].bounds_px.width x sections[i].bounds_px.height. Result matches composite.png.',
+    /** Step-by-step instructions to recreate the final composite from section PNGs. */
+    recreate_composite: recreateSteps.join(' '),
+    /** Explicit steps array for programmatic use. */
+    recreate_composite_steps: recreateSteps,
+    /** All section coordinates in one place: index -> { x, y, width, height } in content space and in pixels (bounds_px). */
+    sections_coordinates: sections.reduce((acc, s) => {
+      acc[s.index] = {
+        content_space: { x: s.bounds.x, y: s.bounds.y, width: s.bounds.width, height: s.bounds.height },
+        pixels: s.bounds_px,
+        corners: s.corners,
+        centroid: { x: s.centroid_x, y: s.centroid_y },
+      };
+      return acc;
+    }, {}),
   };
 
   if (source_width != null || source_height != null) {
